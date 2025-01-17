@@ -1,5 +1,5 @@
 import "sort"
-func longestConsecutive(nums []int) int {
+func longestConsecutiveBruteforce(nums []int) int {
     if len(nums) == 0 {
         return 0
     }
@@ -31,7 +31,34 @@ func longestConsecutive(nums []int) int {
     return longestStreak
 }
 
-// Optimal
-func longestConsecutiveOptimal(nums []int) int {
-return 0
+// Optimal Solution using Hash Set  / Solusi Optimal menggunakan Hash Set
+func longestConsecutive(nums []int) int {
+    // Create a hash set / Buat hash set
+    numSet := make(map[int]bool)
+    for _, num := range nums {
+        numSet[num] = true
+    }
+
+    longestStreak := 0
+
+    // Check each number / Periksa setiap angka
+    for num := range numSet {
+        // Only start counting if it's the start of a sequence
+        // Hanya mulai menghitung jika ini adalah awal dari urutan
+        if !numSet[num-1] {
+            currentNum := num
+            currentStreak := 1
+
+            // Count consecutive numbers / Hitung angka berurutan
+            for numSet[currentNum+1] {
+                currentNum++
+                currentStreak++
+            }
+
+            if currentStreak > longestStreak {
+                longestStreak = currentStreak
+            }
+        }
+    }
+    return longestStreak
 }
